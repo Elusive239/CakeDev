@@ -1,11 +1,3 @@
-
-
-<style>
-r { color: Red }
-y { color: Yellow }
-g { color: Green }
-</style>
-
 **Cake**
 ===========
 
@@ -17,32 +9,32 @@ without git for a good while! Time to put it on git for real and get this finish
 
 
 ## **Key**
-[<r>_</r>] -> NOT STARTED
+[_] -> NOT STARTED
 
-[<y>0</y>] -> IN PROGRESS
+[0] -> IN PROGRESS
 
-[<g>X</g>] -> FINISHED
+[X] -> FINISHED
 
 ---
 
-[<g>X</g>] Strings
+[X] Strings
 
-[<g>X</g>] Basic Math Operations for integers and floating point numbers
+[X] Basic Math Operations for integers and floating point numbers
 
-[<g>X</g>] Basic Boolean Operations
+[X] Basic Boolean Operations
 
-[<g>X</g>] Basic Variables & Assignent Operations
+[X] Basic Variables & Assignent Operations
 
-[<g>X</g>] Assert (Takes a boolean operation and exits the script immediately if false)
+[X] Assert (Takes a boolean operation and exits the script immediately if false)
 
-[<g>X</g>] Branches (if, elif, and else statements)
+[X] Branches (if, elif, and else statements)
 
-[<g>X</g>] Arrays (Creating, Accessing, Basic and Multi-Dimensional)
+[X] Arrays (Creating, Accessing, Basic and Multi-Dimensional)
 
-[<y>0</y>] Loops (For, While)
+[0] Loops (For, While)
 
-[<r>_</r>] Functions (Cake and C# functions)
+[_] Functions (Cake and C# functions)
 
-[<r>_</r>] Structs (Creating, Accessing)
+[_] Structs (Creating, Accessing)
 
-[<r>_</r>] ???
+[_] ???
