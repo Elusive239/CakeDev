@@ -5,7 +5,7 @@ using Cake;
 
 bool record = false;
 bool test = false;
-string inputFile = $"{Directory.GetCurrentDirectory()}\\Tests\\while.ck";
+string inputFile = $"{Directory.GetCurrentDirectory()}\\Tests\\struct.ck";
 
 for (int i = 0; i < args.Length; i++)
 {

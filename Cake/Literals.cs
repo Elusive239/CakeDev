@@ -109,3 +109,22 @@ public class ArrayLiteral : ITokenLiteral{
 		return builder.ToString();
 	}
 }
+
+public class StructLiteral : ITokenLiteral {
+	public Dictionary<string, ITokenLiteral> values;
+	public StructLiteral(Dictionary<string, ITokenLiteral> values){
+		this.values = values;
+	}
+
+    public override string ToString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append('{');
+        foreach(var e in values){
+            builder.Append($"{e.Key}:{e.Value}, ");
+        }
+        builder.Append('}');
+
+        return builder.ToString();
+    }
+}

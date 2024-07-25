@@ -2,7 +2,7 @@ namespace Cake
 {
 	public enum TokenType
 	{
-		IDENT, COMMA, PERIOD,
+		IDENT, COMMA, PERIOD, COLON,
 		//Keywords
 		DEF, IF, ELIF, ELSE, DO, DONE, RETURN, ASSERT, WHILE,
 		//Literals
@@ -11,6 +11,7 @@ namespace Cake
 		MATH_OP, ASS_OP, BOOL_OP,
 		PAREN_LEFT, PAREN_RIGHT,
 		BRACK_LEFT, BRACK_RIGHT,
+		BRACE_LEFT, BRACE_RIGHT,
 		//End
 		EOL, EOF
 	}

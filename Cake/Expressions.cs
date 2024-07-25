@@ -71,3 +71,35 @@ public class ArrayAccessorExpr : Expr{
 		}
 	}
 }
+
+public class StructExpr : Expr {
+	public Dictionary<string, Expr> values;
+	public StructExpr(Dictionary<string, Expr> values){
+		this.values = values;
+	}
+	public override string ToString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.Append('{');
+        foreach(var e in values){
+            builder.Append($"{e.Key}:{e.Value}, ");
+        }
+        builder.Append('}');
+
+        return builder.ToString();
+    }
+}
+
+public class StructAccessorExpr : Expr{
+	public Expr left;
+	public Expr right;
+	public StructAccessorExpr (Expr left, Expr right){
+		this.left = left;
+		this.right = right;
+	}
+
+    public override string ToString()
+    {
+        return $"{left}.{right}";
+    }
+}

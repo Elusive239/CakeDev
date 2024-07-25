@@ -181,6 +181,11 @@ public class Parser
 
 		Expr left = ParseValueExpr();
 
+		if(Peek().typ == TokenType.PERIOD){
+			Consume();
+			left = new StructAccessorExpr(left, (StringLiteral)Consume().val);
+		}
+
 		while (Peek().typ != TokenType.EOL)
 			if (Peek().typ == TokenType.MATH_OP || Peek().typ == TokenType.ASS_OP || Peek().typ == TokenType.BOOL_OP && !Peek().val.Equals("not"))
 			{
@@ -242,6 +247,32 @@ public class Parser
 				}
 				Consume();
 				return val;
+			case TokenType.BRACE_LEFT:
+				Dictionary<string, Expr> values = new();
+				while(Peek().typ != TokenType.BRACE_RIGHT){
+					while(Peek().typ == TokenType.EOL){
+						Consume();
+					}
+
+					if(Peek().typ != TokenType.IDENT){
+						throw ERROR("Missing identifier in struct creation.");
+					}
+					string ident = ((StringLiteral)Consume().val).value;
+					if(Peek().typ != TokenType.COLON){
+						throw ERROR("Missing colon in struct property creation.");
+					}Consume();
+					Expr v = ParseExpr();
+					values.Add(ident, v);
+					if(Peek().typ != TokenType.COMMA){
+						break;
+					}else Consume();
+				} 
+				if(Peek().typ != TokenType.BRACE_RIGHT){
+					throw ERROR("Struct definition never closed.");
+				}
+				
+				Consume();
+				return new StructExpr(values);
 			case TokenType.NUM_LIT:
 				return (Expr)token.val;
 			case TokenType.STR_LIT:

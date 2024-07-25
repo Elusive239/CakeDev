@@ -4,11 +4,11 @@ namespace Cake;
 
 public class Lexer
 {
-	readonly List<Token> tokens = new();
-	const string nums = "0123456789";
-	readonly string[] mathOperators = new string[] { "+", "-", "*", "/", "%" };
-	readonly string[] assignmentOperators = new string[] { "+=", "-=", "*=", "/=", "%=", "=" };
-	readonly string[] booleanOperators = new string[] { "==", "!=", "<", "<=", ">", ">=", "and", "or", "not" };
+	private readonly List<Token> tokens = new();
+	private const string nums = "0123456789";
+	private readonly string[] mathOperators = new string[] { "+", "-", "*", "/", "%" };
+	private readonly string[] assignmentOperators = new string[] { "+=", "-=", "*=", "/=", "%=", "=" };
+	private readonly string[] booleanOperators = new string[] { "==", "!=", "<", "<=", ">", ">=", "and", "or", "not" };
 	//special keywords implemented like this so we dont need a  big chain of if statements!
 	public Dictionary<string, Token> keywords = new(){ 
 		{"True", new Token(TokenType.BOOL_LIT, BooleanLiteral.TRUE, 0)},
@@ -29,8 +29,11 @@ public class Lexer
 		{")" , new Token(TokenType.PAREN_RIGHT, new StringLiteral(")"), 0)},
 		{"[" , new Token(TokenType.BRACK_LEFT, new StringLiteral("["), 0)},
 		{"]" , new Token(TokenType.BRACK_RIGHT, new StringLiteral("]"), 0)},
+		{"{" , new Token(TokenType.BRACE_LEFT, new StringLiteral("{"), 0)},
+		{"}" , new Token(TokenType.BRACE_RIGHT, new StringLiteral("}"), 0)},
 		{".", new Token(TokenType.PERIOD, new StringLiteral("."), 0)},
 		{",", new Token(TokenType.COMMA, new StringLiteral(","), 0)},
+		{":", new Token(TokenType.COLON, new StringLiteral(":"), 0)},
 		{"/", new Token(TokenType.IDENT,  new StringLiteral("SHOULDN'T GET HERE"), 0)}
 	};
 	public int lineNumber = 1;
@@ -111,7 +114,7 @@ public class Lexer
 					throw ERROR($"Unknown operator {op} at {lineNumber}.");
 			}
 			else if (keywords.ContainsKey(span[index]+"")){
-				tokens.Add(keywords[span[index]+""].Copy() );
+				tokens.Add(keywords[span[index]+""].Copy(lineNumber) );
 			}
 			else
 			{

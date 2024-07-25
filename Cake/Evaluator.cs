@@ -122,6 +122,21 @@ public class Evaluator
 			ArrayLiteral ex = (ArrayLiteral) Evaluate(arrEvalExpr.left);
 			return ex.literals[index];
 		}
+		return EvaluateStruct(stmt);
+	}
+
+	private ITokenLiteral EvaluateStruct(Stmt stmt){
+		if (stmt is StructExpr strut){
+			Dictionary<string, ITokenLiteral> lits = new();
+			foreach(KeyValuePair<string, Expr> pair in strut.values){
+				lits.Add( pair.Key, Evaluate(pair.Value) );
+			}
+			return new StructLiteral(lits);
+		}if (stmt is StructAccessorExpr accesor){
+			StructLiteral stru = (StructLiteral)Evaluate(accesor.left);
+			StringLiteral lit = (StringLiteral) Evaluate(accesor.right);
+			return stru.values[lit.value];
+		}
 		return EvaluateLiterals(stmt);
 	}
 
