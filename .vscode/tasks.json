@@ -1,0 +1,73 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"command": "python",
+			"label": "record tests",
+			"args": [
+				"${workspaceFolder}/BuildTest.py"
+			],
+			"problemMatcher": []
+		},
+		{
+			"label": "record",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"run",
+				"--no-build",
+				"--",
+				"-r"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "test",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"run",
+				"--no-build",
+				"--",
+				"-t"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "build",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"build",
+				"${workspaceFolder}/ScriptingLang.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary;ForceNoAlign"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "publish",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"publish",
+				"${workspaceFolder}/ScriptingLang.csproj",
+				"/property:GenerateFullPaths=true",
+				"/consoleloggerparameters:NoSummary;ForceNoAlign"
+			],
+			"problemMatcher": "$msCompile"
+		},
+		{
+			"label": "watch",
+			"command": "dotnet",
+			"type": "process",
+			"args": [
+				"watch",
+				"run",
+				"--project",
+				"${workspaceFolder}/ScriptingLang.csproj"
+			],
+			"problemMatcher": "$msCompile"
+		}
+	]
+}
