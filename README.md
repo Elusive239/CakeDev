@@ -1,11 +1,16 @@
 **Cake**
 ===========
 
-The C# based scripting language where you can have your cake and eat it too! (dies)
+The C# based scripting language where you can have your cake and eat it too! (***Dies***)
 
 This was made for fun but maybe I'll put it in a game one day!. Also yes i've been writing this
 without git for a good while! Time to put it on git for real and get this finished!
 
+Click [here](SYNTAX.md) to get a hopefully short and easy to understand overview of 
+the syntax. Subject to modification, will likely break as Cake is fleshed out.
+
+TODO
+----
 
 [X] Strings
 
