@@ -33,15 +33,6 @@ public class VariableExpr : Expr
 	}
 }
 
-public class VariableDeclarationExpr : Expr
-{
-	public string name = string.Empty;
-	public Expr expr = NilLiteral.NIL;
-	public override string? ToString()
-	{
-		return $"def {name}: {expr}";
-	}
-}
 
 public class ArrayExpr : Expr{
 	public Expr[] arr = Array.Empty<Expr>();

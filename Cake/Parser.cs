@@ -62,7 +62,7 @@ public class Parser
 			}
 			Consume();
 			Expr expr = ParseExpr();
-			return new VariableDeclarationExpr()
+			return new VariableDeclarationStmt()
 			{
 				expr = expr,
 				name = ((StringLiteral)ident.val).value

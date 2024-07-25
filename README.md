@@ -7,16 +7,6 @@ This was made for fun but maybe I'll put it in a game one day!. Also yes i've be
 without git for a good while! Time to put it on git for real and get this finished!
 
 
-
-## **Key**
-[_] -> NOT STARTED
-
-[0] -> IN PROGRESS
-
-[X] -> FINISHED
-
----
-
 [X] Strings
 
 [X] Basic Math Operations for integers and floating point numbers
@@ -31,10 +21,10 @@ without git for a good while! Time to put it on git for real and get this finish
 
 [X] Arrays (Creating, Accessing, Basic and Multi-Dimensional)
 
-[0] Loops (For, While)
+[ ] Loops (For, While)
 
-[_] Functions (Cake and C# functions)
+[ ] Functions (Cake and C# functions)
 
-[_] Structs (Creating, Accessing)
+[ ] Structs (Creating, Accessing)
 
-[_] ???
+[ ] ???

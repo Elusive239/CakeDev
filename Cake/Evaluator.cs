@@ -72,7 +72,7 @@ public class Evaluator
 	}
 
 	private ITokenLiteral EvaluateVariable(Stmt stmt){
-		if (stmt is VariableDeclarationExpr varDec)
+		if (stmt is VariableDeclarationStmt varDec)
 		{
 			variables.Add(varDec.name, Evaluate(varDec.expr));
 			return NilLiteral.NIL;

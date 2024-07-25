@@ -45,6 +45,16 @@ public class AssertStmt : Stmt{
     }
 }
 
+public class VariableDeclarationStmt : Stmt
+{
+	public string name = string.Empty;
+	public Expr expr = NilLiteral.NIL;
+	public override string? ToString()
+	{
+		return $"def {name}: {expr}";
+	}
+}
+
 public class IfStmt : Stmt{
 	public Expr condition;
 	public BodyStmt body;
