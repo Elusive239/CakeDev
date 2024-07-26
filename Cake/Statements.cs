@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace Cake;
 
 public class Stmt { }
@@ -89,6 +91,13 @@ public class BodyStmt : Stmt{
 	public Stmt[] body;
 	public BodyStmt(Stmt[] _body) => body = _body;
 
+	public BodyStmt(BodyStmt stmt){
+		this.body = new Stmt[stmt.body.Length];
+		for(int i=0; i < body.Length; i++){
+			body[i] = stmt.body[i];
+		}
+	}
+
 	public override string ToString()
 	{
 		System.Text.StringBuilder builder = new();
@@ -102,4 +111,24 @@ public class BodyStmt : Stmt{
 
 		return builder.ToString();
 	}
+}
+
+public class FunctionDeclarationStmt : Stmt{
+	public StringLiteral name;
+	public StringLiteral[] args;
+	public BodyStmt body;
+	public FunctionDeclarationStmt (StringLiteral name, StringLiteral[] args, BodyStmt body){
+		(this.name,this.args,this.body) = (name, args, body);
+	}
+    public override string ToString()
+    {
+		StringBuilder builder = new();
+		builder.Append($"fn {name} (");
+			foreach(var s in args){
+				builder.Append($"{s}, ");
+			}
+
+		builder.Append($") do {body} done");
+        return builder.ToString();
+    }
 }

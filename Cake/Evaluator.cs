@@ -3,12 +3,15 @@ using static Cake.Util;
 namespace Cake;
 public class Evaluator
 {
-    private readonly Dictionary<string, ITokenLiteral> vars;
+    public readonly Dictionary<string, ITokenLiteral> vars;
+	public readonly Dictionary<string, FunctionDeclarationStmt> funcs;
+	// private readonly Dictionary<string, Funci
 	private bool exit = false;
 	private int exitCode = 0;
 	public Evaluator()
 	{
 		vars = new();
+		funcs = new();
 	}
 
     public override string ToString()
@@ -16,7 +19,13 @@ public class Evaluator
 		StringBuilder stringBuilder = new();
 		stringBuilder.Append ("Variables: {");
 		foreach(KeyValuePair<string, ITokenLiteral> pair in vars){
-			stringBuilder.Append ($"{pair.Key}:{pair.Value},");
+			stringBuilder.Append ($"{pair.Key}:{pair.Value}, ");
+		} 
+		stringBuilder.Append ('}');
+
+		stringBuilder.Append ("\nFunctions: {");
+		foreach(KeyValuePair<string, FunctionDeclarationStmt> pair in funcs){
+			stringBuilder.Append ($"[{pair.Value}], ");
 		} 
 		stringBuilder.Append ('}');
         return stringBuilder.ToString();
@@ -67,6 +76,23 @@ public class Evaluator
 				Evaluate(whil.body);
 			}
 			return NilLiteral.NIL;
+		}else if (stmt is FunctionDeclarationStmt funcDec){
+			//INFO($"{funcDec}");
+
+			funcs.Add(funcDec.name.value, funcDec);
+			//funcs.Add(funcDec.name, new FunctionCallLiteral());
+
+			return NilLiteral.NIL;
+		}else if (stmt is FunctionCallExpr funcCall){
+			FunctionDeclarationStmt dec = funcs[funcCall.funcName.value];
+			if(funcCall.args.Length != dec.args.Length){
+				throw ERROR($"Function call has {funcCall.args.Length} arguments, expected {dec.args.Length}");
+			}
+			Dictionary<string, ITokenLiteral> funcVars = new();
+			for(int i = 0; i < dec.args.Length; i++){
+				funcVars.Add(dec.args[i].value, Evaluate(funcCall.args[i]));
+			}
+			return new FunctionCallLiteral(funcVars, dec.body).Invoke();
 		}
 		return EvaluateVariable(stmt);
 	}
@@ -157,7 +183,7 @@ public class Evaluator
 		throw ERROR($"Unimplemented stmt \'{stmt}\'");
 	}
 
-	private ITokenLiteral EvaluateBody(BodyStmt expr)
+	public ITokenLiteral EvaluateBody(BodyStmt expr)
 	{
 		ITokenLiteral literal = NilLiteral.NIL;
 		foreach (var item in expr.body)

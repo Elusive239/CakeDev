@@ -25,6 +25,7 @@ public class Lexer
 		{"done", new Token(TokenType.DONE, new StringLiteral("done"), 0)},
 		{"return", new Token(TokenType.RETURN, new StringLiteral("return"), 0)},
 		{"assert", new Token(TokenType.ASSERT, new StringLiteral("assert"), 0)},
+		{"fn", new Token(TokenType.FN, new StringLiteral("fn"), 0)},
 		{"(" , new Token(TokenType.PAREN_LEFT, new StringLiteral("("), 0)},
 		{")" , new Token(TokenType.PAREN_RIGHT, new StringLiteral(")"), 0)},
 		{"[" , new Token(TokenType.BRACK_LEFT, new StringLiteral("["), 0)},

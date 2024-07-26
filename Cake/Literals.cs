@@ -128,3 +128,21 @@ public class StructLiteral : ITokenLiteral {
         return builder.ToString();
     }
 }
+
+public class FunctionCallLiteral : ITokenLiteral{
+    public Evaluator evaluator;
+    public BodyStmt body;
+    public FunctionCallLiteral(Dictionary<string, ITokenLiteral> args, BodyStmt body){
+        evaluator = new();
+        foreach (var item in args)
+        {
+            evaluator.vars.Add(item.Key, item.Value);
+        }
+        
+        this.body = new BodyStmt(body);
+    }
+
+    public ITokenLiteral Invoke(){
+        return evaluator.EvaluateBody(body);
+    }
+}

@@ -122,3 +122,11 @@ public class StructAccessorExpr : Expr{
 	}
 
 }
+
+public class FunctionCallExpr : Expr{
+	public StringLiteral funcName;
+	public Expr[] args;
+	public FunctionCallExpr(StringLiteral name, Expr[] args){
+		(funcName, this.args) = (name, args);
+	}
+}

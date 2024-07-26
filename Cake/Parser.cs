@@ -104,6 +104,27 @@ public class Parser
 			return new WhileStmt(condition, body);
 		}
 
+		if (Peek().typ == TokenType.FN){
+			Consume();
+			StringLiteral name = (StringLiteral) Expect(TokenType.IDENT, "Attempted to define function but found no identifier.").val;
+			Expect(TokenType.PAREN_LEFT, "No opening parenthesis for arguments in function definition.");
+			List<StringLiteral> args = new();
+			while(true){
+				args.Add((StringLiteral) Expect(TokenType.IDENT, $"Attempted to define function but found invalid argument \'{Peek()}\'").val);
+				if(Peek().typ != TokenType.COMMA)
+					break;
+				else {
+					Consume();
+					continue;
+				}
+			}
+			Expect(TokenType.PAREN_RIGHT, "No closing parenthesis for arguments in function definition.");
+			Expect(TokenType.DO, "Attempted to declare function but no body opening (\'do\') was found.");
+			BodyStmt body = (BodyStmt) ParseBody();
+			Expect(TokenType.DONE, "Attemted to declare function but no end to body.");
+			return new FunctionDeclarationStmt(name, args.ToArray(), body);
+		}
+
 		return ParseExpr();
 	}
 
@@ -267,6 +288,20 @@ public class Parser
 					};
 					return expr;
 				}
+				if(Peek().typ == TokenType.PAREN_LEFT){
+					Consume();
+					List<Expr> exprs = new();
+					StringLiteral funcName = (StringLiteral)token.val;
+					while(true){
+						exprs.Add(ParseExpr());
+						if(Peek().typ == TokenType.COMMA){
+							Consume();
+						} else break;
+					}
+					Expect(TokenType.PAREN_RIGHT, "Missing closing parenthesis in function call");
+					return new FunctionCallExpr(funcName, exprs.ToArray());
+				}
+
 				Expr lft = new VariableExpr() { name = ((StringLiteral)token.val).value };
 				while(Peek().typ == TokenType.BRACK_LEFT){
 					Consume();

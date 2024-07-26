@@ -4,7 +4,7 @@ namespace Cake
 	{
 		IDENT, COMMA, PERIOD, COLON,
 		//Keywords
-		DEF, IF, ELIF, ELSE, DO, DONE, RETURN, ASSERT, WHILE,
+		DEF, IF, ELIF, ELSE, DO, DONE, RETURN, ASSERT, WHILE, FN,
 		//Literals
 		NUM_LIT, STR_LIT, NIL_LIT, BOOL_LIT,
 		//Operators
