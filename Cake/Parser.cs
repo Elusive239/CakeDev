@@ -21,6 +21,13 @@ public class Parser
 		return Tokens[index++];
 	}
 
+	public Token Expect(TokenType type, string message){
+		if( index < Tokens.Length && Peek().typ != type){
+			throw ERROR(message);
+		}
+		return Consume();
+	}
+
 	public Main Parse()
 	{
 		if (Tokens.Length <= 1) return new Main();
@@ -49,11 +56,7 @@ public class Parser
 		if (Peek().typ == TokenType.DEF)
 		{
 			Consume();
-			if (Peek().typ != TokenType.IDENT)
-			{
-				throw ERROR("Keyword \'def\' used without corresponding identifier.");
-			}
-			Token ident = Consume();
+			Token ident = Expect(TokenType.IDENT, "Keyword \'def\' used without corresponding identifier.");
 			if (Peek().typ != TokenType.ASS_OP && !Peek().val.Equals("="))
 			{
 				throw ERROR("Variable declared but not assigned");
@@ -92,16 +95,12 @@ public class Parser
 		if(Peek().typ == TokenType.WHILE){
 			Consume();
 			Expr condition = ParseExpr();
-			if(Peek().typ != TokenType.DO){
-				throw ERROR("No do after loop declaration found.");
-			} Consume();
+			Expect(TokenType.DO, "No do after loop declaration found.");
 			
 			//parse while section
 			BodyStmt body = (BodyStmt) ParseBody();
 
-			if(Peek().typ != TokenType.DONE){
-				throw ERROR("Loop is never closed.");
-			} Consume();
+			Expect(TokenType.DONE, "Loop is never closed.");
 			return new WhileStmt(condition, body);
 		}
 
@@ -115,12 +114,9 @@ public class Parser
 		if(token.typ == TokenType.IF || token.typ == TokenType.ELIF){
 			condition = ParseExpr();
 		}
-
+		Expect(TokenType.DO, "if statement not opened properly; missing \'do\' after if statement.");
 		//parse body
-		if(Peek().typ != TokenType.DO){
-			throw ERROR("if statement not opened properly; missing \'do\' after if statement.");
-		} Consume();
-
+	
 		while(Peek().typ == TokenType.EOL) Consume();
 		
 		BodyStmt body = (BodyStmt) ParseBody();
@@ -130,17 +126,11 @@ public class Parser
 				IfStmt ifstmt = new(body, condition, ParseIfStmt());
 				return ifstmt;
 			}
-			else if (Peek().typ != TokenType.DONE){
-				throw ERROR("if statement not closed properly; missing \'done\' at end of if statement chain.");
-			}
-			Consume();
+			Expect(TokenType.DONE,"if statement not closed properly; missing \'done\' at end of if statement chain.");
 			IfStmt stmt = new( body, condition, NilLiteral.NIL);
 			return stmt;
 		}else if(token.typ == TokenType.ELSE){
-			if (Peek().typ != TokenType.DONE){
-				throw ERROR("if statement not closed properly; missing \'done\' at end of if statement chain.");
-			}
-			Consume();
+			Expect(TokenType.DONE, "if statement not closed properly; missing \'done\' at end of if statement chain.");
 			IfStmt stmt = new( body, condition, NilLiteral.NIL);
 			return stmt;
 		}
@@ -221,18 +211,19 @@ public class Parser
 					}
 					break;
 				}
-				if(Peek().typ != TokenType.BRACK_RIGHT){
-					throw ERROR("Improperly closed Array.");
-				}Consume();
+				// if(Peek().typ != TokenType.BRACK_RIGHT){
+				// 	throw ERROR("Improperly closed Array.");
+				// }Consume();
+
+				Expect(TokenType.BRACK_RIGHT, "Improperly closed Array.");
+
 				Expr left = new ArrayExpr(expressions.ToArray());
 
 				if(Peek().typ == TokenType.BRACK_LEFT){
 					while(Peek().typ == TokenType.BRACK_LEFT){
 						Consume();
 						Expr accessor = ParseExpr();
-						if(Peek().typ != TokenType.BRACK_RIGHT){
-							throw ERROR("Improperly closed Array accessor.");
-						}Consume();
+						Expect(TokenType.BRACK_RIGHT, "Improperly closed Array accessor.");
 						left = new ArrayAccessorExpr(left, accessor);
 					}
 				}
@@ -240,12 +231,7 @@ public class Parser
 				return left;
 			case TokenType.PAREN_LEFT:
 				Expr val = ParseExpr();
-
-				if (Peek().typ != TokenType.PAREN_RIGHT)
-				{
-					throw ERROR($"Token {token.val} never closed at line {token.lineNumber}");
-				}
-				Consume();
+				Expect(TokenType.PAREN_RIGHT, $"Token {token.val} never closed at line {token.lineNumber}");
 				return val;
 			case TokenType.BRACE_LEFT:
 				Dictionary<string, Expr> values = new();
@@ -254,24 +240,15 @@ public class Parser
 						Consume();
 					}
 
-					if(Peek().typ != TokenType.IDENT){
-						throw ERROR("Missing identifier in struct creation.");
-					}
-					string ident = ((StringLiteral)Consume().val).value;
-					if(Peek().typ != TokenType.COLON){
-						throw ERROR("Missing colon in struct property creation.");
-					}Consume();
+					string ident = ((StringLiteral)Expect(TokenType.IDENT, "Missing identifier in struct creation.").val).value;
+					Expect(TokenType.COLON, "Missing colon in struct property creation.");
 					Expr v = ParseExpr();
 					values.Add(ident, v);
 					if(Peek().typ != TokenType.COMMA){
 						break;
 					}else Consume();
 				} 
-				if(Peek().typ != TokenType.BRACE_RIGHT){
-					throw ERROR("Struct definition never closed.");
-				}
-				
-				Consume();
+				Expect(TokenType.BRACE_RIGHT, "Struct definition never closed.");
 				return new StructExpr(values);
 			case TokenType.NUM_LIT:
 				return (Expr)token.val;
@@ -294,9 +271,7 @@ public class Parser
 				while(Peek().typ == TokenType.BRACK_LEFT){
 					Consume();
 					Expr accessor = ParseExpr();
-					if(Peek().typ != TokenType.BRACK_RIGHT){
-						throw ERROR("Improperly closed Array accessor.");
-					}Consume();
+					Expect(TokenType.BRACK_RIGHT, "Improperly closed Array accessor.");
 					lft = new ArrayAccessorExpr(lft, accessor);
 				}
 				return lft;

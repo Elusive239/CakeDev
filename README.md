@@ -12,7 +12,7 @@ the syntax. Subject to modification, will likely break as Cake is fleshed out.
 TODO
 ----
 
-[X] Strings
+[X] Strings (basic)
 
 [X] Basic Math Operations for integers and floating point numbers
 
@@ -31,5 +31,7 @@ TODO
 [ ] Functions (Cake and C# functions)
 
 [X] Structs (Creating, Accessing)
+
+[ ] String (escape characters)
 
 [ ] ???
