@@ -8,33 +8,32 @@ without git for a good while! Time to put it on git for real and get this finish
 
 Click [here](SYNTAX.md) to get a hopefully short and easy to understand overview of the syntax. Subject to modification, will likely break as Cake is fleshed out.
 
+SUPPORTS
+--------
+
+- strings
+- math operations
+- boolean operations
+- variables
+- if, elif, and else
+- while Loops
+- functions (not C# native, yet)
+- arrays (regular, arrays in arrays, etc)
+- 'structs'
+- assert (debug keyword that ends program early if condition fails)
+
+
 TODO
 ----
-
-[X] Strings (basic)
-
-[X] Basic Math Operations for integers and floating point numbers
-
-[X] Basic Boolean Operations
-
-[X] Basic Variables & Assignent Operations
-
-[X] Assert (Takes a boolean operation and exits the script immediately if false)
-
-[X] Branches (if, elif, and else statements)
-
-[X] Arrays (Creating, Accessing, Basic and Multi-Dimensional)
-
-[X] Loops (While)
-
-[X] Functions (Cake)
 
 [ ] Global Vars in Cake functions (@var)
 
 [ ] Functions (C#)
 
-[X] Structs (Creating, Accessing)
+[ ] Loops (For i)
 
-[ ] String (escape characters)
+[ ] Escape Characters in strings
 
-[ ] ???
+[ ] Refactor?
+
+[ ] Support C# objects?
