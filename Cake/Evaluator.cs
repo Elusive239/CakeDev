@@ -3,19 +3,19 @@ using static Cake.Util;
 namespace Cake;
 public class Evaluator
 {
-    private readonly Dictionary<string, ITokenLiteral> variables;
+    private readonly Dictionary<string, ITokenLiteral> vars;
 	private bool exit = false;
 	private int exitCode = 0;
 	public Evaluator()
 	{
-		variables = new();
+		vars = new();
 	}
 
     public override string ToString()
     {
 		StringBuilder stringBuilder = new();
 		stringBuilder.Append ("Variables: {");
-		foreach(KeyValuePair<string, ITokenLiteral> pair in variables){
+		foreach(KeyValuePair<string, ITokenLiteral> pair in vars){
 			stringBuilder.Append ($"{pair.Key}:{pair.Value},");
 		} 
 		stringBuilder.Append ('}');
@@ -74,12 +74,12 @@ public class Evaluator
 	private ITokenLiteral EvaluateVariable(Stmt stmt){
 		if (stmt is VariableDeclarationStmt varDec)
 		{
-			variables.Add(varDec.name, Evaluate(varDec.expr));
+			vars.Add(varDec.name, Evaluate(varDec.expr));
 			return NilLiteral.NIL;
 		}
 		else if (stmt is VariableExpr varExpr)
 		{
-			return variables[varExpr.name];
+			return vars[varExpr.name];
 		}
 		return EvaluateOperator(stmt);
 	}
@@ -117,7 +117,7 @@ public class Evaluator
 		}else if (stmt is ArrayAccessorExpr arrEvalExpr){
 			int index = ToInt(arrEvalExpr.accessor);
 			if(arrEvalExpr.left is VariableExpr var){
-				return ((ArrayLiteral)variables[var.name]).literals[index];
+				return ((ArrayLiteral)vars[var.name]).literals[index];
 			}
 			ArrayLiteral ex = (ArrayLiteral) Evaluate(arrEvalExpr.left);
 			return ex.literals[index];
@@ -246,15 +246,29 @@ public class Evaluator
 	
 	private ITokenLiteral EvaluateAssign(OperatorExpr expr)
 	{
+		Dictionary<string, ITokenLiteral> variables = vars; 
+		string? assigne = null;
+		if(expr.left is StructAccessorExpr lf){
+			//INFO($"{Evaluate(lf.left)}");
+			string[] arr = lf.GetAccessors();
+			
+			for (int i = 0; i < arr.Length; i++){
+				if(variables[arr[i]] is StructLiteral lit){
+					variables = lit.values;
+				}
+				//variables = ((StructLiteral) vars[arr[i]]).values;
+			}
+			assigne = arr[^1];
+		}
+
 		if(exit) return NilLiteral.NIL;
 		bool isArr = expr.left is ArrayAccessorExpr;
-        string? assigne;
         if (isArr){
 			Expr assign = expr.left;
 			while(assign is not VariableExpr )
 				assign = ((ArrayAccessorExpr)assign).left;
 			assigne = ((VariableExpr)assign).name;
-		} else assigne = ((StringLiteral)Evaluate(expr.left)).value;
+		} else assigne ??= ((StringLiteral)Evaluate(expr.left)).value;
 
 		if(assigne == null || !variables.ContainsKey(assigne))
 			throw ERROR($"Assigne \'{assigne}\' is not defined before it is assigned.");
@@ -288,7 +302,7 @@ public class Evaluator
 	
 	public ITokenLiteral AssignExprToIndex(string array, ArrayAccessorExpr accessor, ITokenLiteral value){
 		Expr[] arr = accessor.GetAccessors().Reverse<Expr>().ToArray();
-		ArrayLiteral lit = (ArrayLiteral) variables[array];
+		ArrayLiteral lit = (ArrayLiteral) vars[array];
 		for(int i = arr.Length-1; i > 0; i--){
 			int ind = ToInt(arr[i]);
 			if(ind > arr.Length || ind < 0){

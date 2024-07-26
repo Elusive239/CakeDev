@@ -92,8 +92,8 @@ public class StructExpr : Expr {
 
 public class StructAccessorExpr : Expr{
 	public Expr left;
-	public Expr right;
-	public StructAccessorExpr (Expr left, Expr right){
+	public StringLiteral right;
+	public StructAccessorExpr (Expr left, StringLiteral right){
 		this.left = left;
 		this.right = right;
 	}
@@ -102,4 +102,23 @@ public class StructAccessorExpr : Expr{
     {
         return $"{left}.{right}";
     }
+
+	public string[] GetAccessors(){
+		List<string> accessors = new();
+		
+		Expr ri = this;
+		while(ri is StructAccessorExpr expr)
+        {
+			accessors.Add((expr.right).value);
+			ri = expr.left;
+		}
+		if(ri is StringLiteral lit)
+			accessors.Add(lit.value);
+		if(ri is VariableExpr var)
+			accessors.Add(var.name);
+
+		accessors.Reverse();
+		return accessors.ToArray();
+	}
+
 }

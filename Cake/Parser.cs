@@ -181,7 +181,7 @@ public class Parser
 
 		Expr left = ParseValueExpr();
 
-		if(Peek().typ == TokenType.PERIOD){
+		while(Peek().typ == TokenType.PERIOD){
 			Consume();
 			left = new StructAccessorExpr(left, (StringLiteral)Consume().val);
 		}
