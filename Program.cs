@@ -103,7 +103,8 @@ static void Execute(string input)
 			Parser parser = new(lexer.Tokenize(input).ToArray());
 			Evaluator evaluator = new();
 			Main main = parser.Parse();
-			int exitCode = evaluator.EvaluateMain(main);
+			evaluator.EvaluateMain(main);
+			int exitCode = evaluator.exitCode;
 		#endregion
 		INFO($"Exit Code: {exitCode}");
 		INFO($"{evaluator}");

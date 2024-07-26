@@ -7,7 +7,7 @@ public class Evaluator
 	public readonly Dictionary<string, FunctionDeclarationStmt> funcs;
 	// private readonly Dictionary<string, Funci
 	private bool exit = false;
-	private int exitCode = 0;
+	public int exitCode = 0;
 	public Evaluator()
 	{
 		vars = new();
