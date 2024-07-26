@@ -177,3 +177,22 @@ Example:
 	variable.y.z -> 21
 	variable.z -> string
 </pre>
+
+## Cake Functions
+Cake Functions can be defined with the **fn** keyword, and called with 
+its associated name, followed by parenthesis and a number of arguments.
+
+<pre>
+fn function_name (arg, ...) do
+	body
+done
+
+function_name(expr, ...)
+</pre>
+
+Cake Functions do not currently support accessing / modifying global
+variables and functions within Cake Functions (calling a function
+within itself, for example).
+
+Cake does not currently support declaring multiple functions of the
+same name.

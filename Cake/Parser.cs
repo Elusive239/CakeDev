@@ -109,6 +109,7 @@ public class Parser
 			StringLiteral name = (StringLiteral) Expect(TokenType.IDENT, "Attempted to define function but found no identifier.").val;
 			Expect(TokenType.PAREN_LEFT, "No opening parenthesis for arguments in function definition.");
 			List<StringLiteral> args = new();
+			if(Peek().typ == TokenType.IDENT)
 			while(true){
 				args.Add((StringLiteral) Expect(TokenType.IDENT, $"Attempted to define function but found invalid argument \'{Peek()}\'").val);
 				if(Peek().typ != TokenType.COMMA)
@@ -292,6 +293,7 @@ public class Parser
 					Consume();
 					List<Expr> exprs = new();
 					StringLiteral funcName = (StringLiteral)token.val;
+					if(Peek().typ != TokenType.PAREN_RIGHT)
 					while(true){
 						exprs.Add(ParseExpr());
 						if(Peek().typ == TokenType.COMMA){

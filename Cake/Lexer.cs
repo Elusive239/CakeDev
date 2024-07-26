@@ -13,6 +13,7 @@ public class Lexer
 	public Dictionary<string, Token> keywords = new(){ 
 		{"True", new Token(TokenType.BOOL_LIT, BooleanLiteral.TRUE, 0)},
 		{"False", new Token(TokenType.BOOL_LIT, BooleanLiteral.FALSE, 0)},
+		{"Nil", new Token(TokenType.NIL_LIT, NilLiteral.NIL, 0)},
 		{"def", new Token(TokenType.DEF, new StringLiteral("def"), 0)},
 		{"not", new Token(TokenType.BOOL_OP, new StringLiteral("not"), 0)},
 		{"and", new Token(TokenType.BOOL_OP, new StringLiteral("and"), 0)},

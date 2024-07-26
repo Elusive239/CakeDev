@@ -27,7 +27,11 @@ TODO
 
 [X] Loops (While)
 
-[ ] Functions (Cake and C# functions)
+[X] Functions (Cake)
+
+[ ] Global Vars in Cake functions (@var)
+
+[ ] Functions (C#)
 
 [X] Structs (Creating, Accessing)
 
