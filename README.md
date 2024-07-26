@@ -26,10 +26,10 @@ TODO
 
 [X] Arrays (Creating, Accessing, Basic and Multi-Dimensional)
 
-[ ] Loops (For, While)
+[X] Loops (While)
 
 [ ] Functions (Cake and C# functions)
 
-[ ] Structs (Creating, Accessing)
+[X] Structs (Creating, Accessing)
 
 [ ] ???
